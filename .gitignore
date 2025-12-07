@@ -23,3 +23,6 @@ product.overrides.json
 *.tsbuildinfo
 .vscode-test
 vscode-telemetry-docs/
+
+# Flow Editor generated files
+src/vs/workbench/contrib/flow/browser/flowEditor/

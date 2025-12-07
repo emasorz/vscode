@@ -429,4 +429,7 @@ import './contrib/editTelemetry/browser/editTelemetry.contribution.js';
 // Opener
 import './contrib/opener/browser/opener.contribution.js';
 
+// Flow
+import './contrib/flow/browser/flow.contribution.js';
+
 //#endregion
