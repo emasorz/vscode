@@ -1,0 +1,168 @@
+:host {
+	display: block;
+	width: 100vw;
+	height: 100vh;
+	margin: 0;
+	padding: 0;
+	overflow: hidden;
+}
+
+.flow-container {
+	width: 100%;
+	height: 100%;
+	position: relative;
+	background-color: #121212;
+	overflow: hidden;
+
+	/* High Visibility Dot Pattern */
+	background-image: radial-gradient(rgba(255, 255, 255, 0.1) 1.5px, transparent 1.5px);
+	background-size: 20px 20px;
+
+	/* Ensure content sits above the lights */
+	z-index: 1;
+
+	/* Ambient Light Container */
+	// &::before {
+	// 	content: '';
+	// 	position: absolute;
+	// 	top: -50%;
+	// 	left: -50%;
+	// 	width: 200%;
+	// 	height: 200%;
+	// 	background: radial-gradient(circle at center, rgba(33, 150, 243, 0.15) 0%, transparent 60%);
+	// 	animation: rotateLight 20s linear infinite;
+	// 	pointer-events: none;
+	// 	z-index: 0;
+	// }
+}
+
+.flow-container::before,
+.flow-container::after {
+	content: '';
+	position: absolute;
+	width: 60vw;
+	/* Large size for ambient effect */
+	height: 60vw;
+	border-radius: 50%;
+	/* Make them circles */
+	filter: blur(80px);
+	/* Heavy blur for soft light */
+	opacity: 0.4;
+	/* Transparency */
+	pointer-events: none;
+	z-index: -1;
+	/* Place behind the content */
+}
+
+/* Light 1: Blue/Cyan - Moves in path A */
+.flow-container::before {
+	background: radial-gradient(circle, rgba(33, 150, 243, 0.6) 0%, rgba(0, 0, 0, 0) 70%);
+	top: -20%;
+	left: -20%;
+	animation: moveLightOne 23s infinite alternate ease-in-out;
+}
+
+/* Light 2: Purple/Pink - Moves in path B (Different speed/direction) */
+.flow-container::after {
+	background: radial-gradient(circle, rgba(156, 39, 176, 0.6) 0%, rgba(0, 0, 0, 0) 70%);
+	bottom: -20%;
+	right: -20%;
+	animation: moveLightTwo 29s infinite alternate ease-in-out;
+}
+
+/* Movement Logic: Move X and Y coordinates randomly */
+
+@keyframes moveLightOne {
+	0% {
+		transform: translate(0, 0) scale(1);
+	}
+
+	33% {
+		transform: translate(40vw, 50vh) scale(1.2);
+	}
+
+	66% {
+		transform: translate(20vw, 20vh) scale(0.8);
+	}
+
+	100% {
+		transform: translate(60vw, -10vh) scale(1);
+	}
+}
+
+@keyframes moveLightTwo {
+	0% {
+		transform: translate(0, 0) scale(1);
+	}
+
+	33% {
+		transform: translate(-50vw, -20vh) scale(1.1);
+	}
+
+	66% {
+		transform: translate(-30vw, 50vh) scale(0.9);
+	}
+
+	100% {
+		transform: translate(-60vw, 30vh) scale(1);
+	}
+}
+
+/* Glassmorphism Node Styles */
+.glass-node {
+	/* More transparent background for better blur visibility */
+	background: rgba(30, 30, 30, 0.4) !important;
+	/* Stronger blur */
+	backdrop-filter: blur(20px);
+	-webkit-backdrop-filter: blur(20px);
+	border: 1px solid rgba(255, 255, 255, 0.2) !important;
+	box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1), 0 1px 3px rgba(0, 0, 0, 0.08) !important;
+	color: #eee;
+}
+
+.glass-header {
+	background: rgba(255, 255, 255, 0.05) !important;
+	border-bottom: 1px solid rgba(255, 255, 255, 0.1) !important;
+	color: #fff !important;
+	text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
+}
+
+.glass-row {
+	border-bottom: 1px solid rgba(255, 255, 255, 0.05) !important;
+	color: #ccc !important;
+	transition: background 0.2s;
+
+	&:hover {
+		background: rgba(255, 255, 255, 0.05) !important;
+	}
+}
+
+.graph-area {
+	width: 100%;
+	height: 100%;
+}
+
+.minimap-container {
+	position: absolute;
+	bottom: 20px;
+	right: 20px;
+	width: 200px;
+	height: 150px;
+	border: 1px solid #444;
+	background-color: #252526;
+	box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+	overflow: hidden;
+	z-index: 100;
+}
+
+.minimap-area {
+	width: 100%;
+	height: 100%;
+}
+
+.absolute-node {
+	position: absolute;
+	/* initial top/left set by JS, but class needed for absolute positioning behavior */
+	will-change: transform;
+	/* Important: We rely on the service to update top/left or transform */
+}
