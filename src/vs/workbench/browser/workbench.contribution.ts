@@ -13,6 +13,7 @@ import { WorkbenchPhase, registerWorkbenchContribution2 } from '../common/contri
 import { CustomEditorLabelService } from '../services/editor/common/customEditorLabelService.js';
 import { ActivityBarPosition, EditorActionsLocation, EditorTabsMode, LayoutSettings } from '../services/layout/browser/layoutService.js';
 import { defaultWindowTitle, defaultWindowTitleSeparator } from './parts/titlebar/windowTitle.js';
+import { FLOW_EDITOR_ID, BlockPanelContribution } from '../contrib/blockPanel/browser/blockPanel.contribution.js';
 
 const registry = Registry.as<IConfigurationRegistry>(ConfigurationExtensions.Configuration);
 
@@ -24,6 +25,9 @@ const registry = Registry.as<IConfigurationRegistry>(ConfigurationExtensions.Con
 
 	// Dynamic Configuration
 	registerWorkbenchContribution2(DynamicWorkbenchSecurityConfiguration.ID, DynamicWorkbenchSecurityConfiguration, WorkbenchPhase.AfterRestored);
+
+	// registrazione flow editor
+	registerWorkbenchContribution2(FLOW_EDITOR_ID, BlockPanelContribution, WorkbenchPhase.BlockStartup);
 
 	// Workbench
 	registry.registerConfiguration({
