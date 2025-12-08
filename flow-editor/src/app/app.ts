@@ -66,5 +66,41 @@ export class App implements AfterViewInit {
     ];
 
     this.flowService.setData(nodes, links);
+
+    const container: any = document.querySelector('#d3-graph');
+    if (container) {
+      container.addEventListener('drop', (event: DragEvent) => {
+        event.preventDefault();
+
+        console.log("Tipo evento:", event.type);
+        console.log("Target:", event.target);
+        console.log("DataTransfer:", event.dataTransfer);
+        console.log("Contenuto:", event.dataTransfer?.getData('text/plain'));
+
+        // Generate random position
+        const rect = container.getBoundingClientRect();
+        const x = event.clientX - rect.left;
+        const y = event.clientY - rect.top;
+
+        // Create a random node
+        const newNode: FlowNode = {
+          id: Date.now().toString(),
+          x, y,
+          width: 180,
+          height: 120,
+          label: event.dataTransfer?.getData('text/plain'),
+          sections: [
+            { id: 'main', text: event.dataTransfer?.getData('text/plain') + 'Action', icon: '✨', ports: 'right' }
+          ]
+        };
+
+        this.flowService.addNode(newNode);
+      });
+
+      // Prevent default dragover so drop works
+      container.addEventListener('dragover', (event: DragEvent) => {
+        event.preventDefault();
+      });
+    }
   }
 }

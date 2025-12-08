@@ -55,7 +55,7 @@ export class FlowEditor extends EditorPane {
 				contentOptions: {
 					allowScripts: true,
 					localResourceRoots: [
-						URI.file('/Users/emanuelesorzana/Documents/Projects/vscode/flow-editor/dist/flow-editor')
+						URI.file('/Users/emanuelesorzana/Documents/Projects/tmp/vscode/src/vs/workbench/contrib/flow/browser/flowEditor/flow-editor/browser')
 					]
 				},
 				extension: undefined
@@ -96,43 +96,30 @@ export class FlowEditor extends EditorPane {
 	}
 
 	private getWebviewContent(): string {
-		const basePath = URI.file('/Users/emanuelesorzana/Documents/Projects/vscode/flow-editor/dist/flow-editor/browser');
-
-		const stylesUri = asWebviewUri(URI.joinPath(basePath, 'styles.css'), undefined);
-		const mainUri = asWebviewUri(URI.joinPath(basePath, 'main.js'), undefined);
+		const basePath = URI.file('/Users/emanuelesorzana/Documents/Projects/tmp/vscode/src/vs/workbench/contrib/flow/browser/flowEditor/flow-editor/browser');
 
 		const nonce = generateUuid();
 
-		const cspSource = webviewGenericCspSource;
+		const stylesUri = asWebviewUri(URI.joinPath(basePath, 'styles.css'));
+		const mainUri = asWebviewUri(URI.joinPath(basePath, 'main.js'));
 
 		return `<!DOCTYPE html>
 		<html>
-			<head>
-				<meta charset="UTF-8">
-				<meta http-equiv="Content-Security-Policy" content="default-src 'none'; style-src ${cspSource} 'unsafe-inline'; script-src 'nonce-${nonce}';">
-				<link rel="stylesheet" href="${stylesUri}">
+		<head>
+			<meta charset="UTF-8">
+			<base href="./">
+			<meta http-equiv="Content-Security-Policy"
+				content="default-src 'none';
+			style-src ${webviewGenericCspSource} 'unsafe-inline';
+				script-src 'nonce-${nonce}';
+			img-src ${webviewGenericCspSource} data:;
+			font-src ${webviewGenericCspSource};">
+		<link rel="stylesheet" href="${stylesUri}">
 			</head>
-			<body>
-				<app-root>
-					<div style="display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100vh; color: var(--vscode-foreground);">
-						<h2>Loading Flow Editor...</h2>
-					</div>
-				</app-root>
-
-				<!-- Angular Scripts -->
-				<script nonce="${nonce}" src="${mainUri}"></script>
-
-				<script nonce="${nonce}">
-					// Simple error handler to help debugging
-					window.addEventListener('error', (e) => {
-						const el = document.createElement('div');
-						el.style.color = 'red';
-						el.style.padding = '20px';
-						el.textContent = 'Error: ' + e.message;
-						document.body.prepend(el);
-					});
-				</script>
-			</body>
+		<body>
+			<app-root>/app-root>
+			<script nonce="${nonce}" src="${mainUri}"></script>
+		</body>
 		</html>`;
 	}
 }

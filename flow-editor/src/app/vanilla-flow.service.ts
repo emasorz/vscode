@@ -602,4 +602,12 @@ export class VanillaFlowService {
 
 		this.minimapSvg.appendChild(rect);
 	}
+
+	public addNode(node: FlowNode) {
+		this.nodes.push(node);
+		this.nodeMap.set(node.id, node);
+		this.render();
+		this.updateTransform();
+		this.updateMinimap();
+	}
 }
